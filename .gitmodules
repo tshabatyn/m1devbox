@@ -1,0 +1,3 @@
+[submodule "env/tools/xhgui"]
+	path = env/tools/xhgui
+	url = https://github.com/perftools/xhgui.git
