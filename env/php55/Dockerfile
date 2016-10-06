@@ -23,22 +23,19 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
     && docker-php-ext-install -j$(nproc) gd
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
-RUN apt-get update && apt-get install -y \
-    libssl-dev \
-    mongodb-clients \
-    && pecl install xhprof-beta \
-    && docker-php-ext-enable xhprof \
-    && pecl install mongodb && docker-php-ext-enable mongodb
-
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-#RUN ln -sf /usr/local/bin/magento2/magento /usr/local/bin/magento
-#RUN ln -sf /var/www/magento2ce/vendor/bin/phpunit /usr/local/bin/phpunit
-
-#COPY etc/php/auth.json /root/.composer/
-#COPY etc/php/config.json /root/.composer/
-#COPY ./etc/php/conf.d/*.ini $PHP_INI_DIR/conf.d/
 COPY ./etc/php/conf.d/development-php.ini $PHP_INI_DIR/php.ini
+
+#we need it for xhprof
+RUN apt-get update && apt-get install -y \
+    libssl-dev \
+    && pecl install xhprof-beta \
+    && docker-php-ext-enable xhprof \
+    && pecl install mongodb && docker-php-ext-enable mongodb \
+    && sed -i 's%auto_prepend_file =%auto_prepend_file = "/var/www/xhgui/external/header.php"%g' /usr/local/etc/php/php.ini
+#we need it for xhprof
+
 COPY ./etc/php/php-fpm.d/development-www.conf /usr/local/etc/php-fpm.d/www.conf
 RUN sed -i 's/www-data/root/g' /usr/local/etc/php-fpm.d/www.conf
 
@@ -68,5 +65,9 @@ RUN echo "xdebug.remote_enable=1" >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.i
     && echo ";xdebug.profiler_enable_trigger=1" >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini \
     && echo ";xdebug.profiler_output_dir = "/var/www/magento/var/tmp"" >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
 
+ADD entrypoint.sh /root/entrypoint.sh
+RUN chmod +x /root/entrypoint.sh
+
 EXPOSE 9000
+ENTRYPOINT ["/root/entrypoint.sh"]
 CMD ["php-fpm", "-R"]
