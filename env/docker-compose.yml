@@ -17,16 +17,12 @@ services:
       - "80:80"
     links:
       - php
-      - mailcatcher
-#      - db
-#      - redis
     volumes_from:
       - php:ro
     volumes:
       - ./conf/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./conf/nginx/magento.conf:/etc/nginx/conf.d/magento.conf
       - ./conf/nginx/xhgui.conf:/etc/nginx/conf.d/xhgui.conf
-#      - ./php55/tools/xhgui:/var/www/xhgui
 
 
 # PHP
@@ -44,6 +40,7 @@ services:
     volumes:
       - ../src:/var/www/magento
       - ./conf/smtp/msmtprc:/etc/msmtprc
+      - ./conf/magento/app/etc/local.xml:/var/www/env/magento/app/etc/local.xml
       - ./php55/tools/xhgui:/var/www/xhgui # we need it for xhprof
       - ./conf/xhgui/config.php:/var/www/env/xhgui/config/config.php # we need it for xhprof
     ports:

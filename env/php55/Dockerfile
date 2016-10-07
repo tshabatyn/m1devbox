@@ -46,7 +46,6 @@ RUN echo 'alias ll="ls -lA"' >>/root/.bashrc
 RUN echo 'root:root' | chpasswd
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-RUN service ssh start && service ssh restart
 
 WORKDIR /var/www/magento
 
