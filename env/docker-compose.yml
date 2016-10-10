@@ -31,7 +31,7 @@ services:
     build:
       context: ./php55
       args:
-        php_ext: bcmath curl dom json iconv mbstring mcrypt opcache pdo pdo_mysql session simplexml soap sockets xml xmlrpc xsl zip
+        php_ext: bcmath curl dom json iconv intl mbstring mcrypt opcache pdo pdo_mysql session simplexml soap sockets xml xmlrpc xsl zip
     links:
       - redis
       - db

@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 
-if [ ! -f /var/www/xhgui/vendor/autoload.php ]; then
-    cd /var/www/xhgui && php install.php
-fi
-
-if [ ! -f /var/www/xhgui/composer.phar ]; then
+if [ ! -f /var/www/xhgui/vendor/autoload.php ] || [ ! -f /var/www/xhgui/composer.phar ]; then
     cd /var/www/xhgui && php install.php
 fi
 
