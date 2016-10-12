@@ -64,9 +64,9 @@ RUN echo "xdebug.remote_enable=1" >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.i
     && echo ";xdebug.profiler_enable_trigger=1" >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini \
     && echo ";xdebug.profiler_output_dir = "/var/www/magento/var/tmp"" >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
 
-ADD entrypoint.sh /root/entrypoint.sh
-RUN chmod +x /root/entrypoint.sh
+ADD entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 9000
-ENTRYPOINT ["/root/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["php-fpm", "-R"]
