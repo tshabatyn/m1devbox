@@ -35,7 +35,7 @@
         </crypt>
         <disable_local_modules>false</disable_local_modules>
         <full_page_cache>
-            <prefix>FPC_MOTRU_PERFORMANCE_</prefix>
+            <prefix>FPC_</prefix>
             <backend>Mage_Cache_Backend_Redis</backend>
             <backend_options>
                 <server>redis</server>
@@ -53,7 +53,7 @@
             </backend_options>
         </full_page_cache>
         <cache>
-            <prefix>MOTRU_PERFORMANCE_</prefix>
+            <prefix>CACHE_</prefix>
             <backend>Mage_Cache_Backend_Redis</backend>
             <backend_options>
                 <server>redis</server>

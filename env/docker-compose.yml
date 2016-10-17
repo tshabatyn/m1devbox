@@ -12,7 +12,7 @@ services:
 # NGINX
   web:
     restart: always
-    image: nginx:1.7
+    image: nginx:stable
     ports:
       - "80:80"
     links:
@@ -32,6 +32,7 @@ services:
       context: ./php55
       args:
         php_ext: bcmath curl dom json iconv intl mbstring mcrypt opcache pdo pdo_mysql session simplexml soap sockets xml xmlrpc xsl zip
+    command: bash -c "service ssh stop && service ssh start"
     links:
       - redis
       - db
@@ -59,6 +60,11 @@ services:
 #    image: mariadb:latest
     env_file:
       - ./conf/db/mysql.env
+    volumes:
+      - ./db/dump.sql:/root/dump.sql
+      - ./db/tune.sql:/root/tune.sql
+      - ./conf/db/.my.cnf:/root/.my.cnf
+      - ./conf/db/etc/mysql/conf.d/:/etc/mysql/conf.d/
 
 # Email
   mailcatcher:
