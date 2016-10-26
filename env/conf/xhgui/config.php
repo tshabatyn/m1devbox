@@ -42,7 +42,14 @@ return array(
             }
         }
 
-        if (isset($_COOKIE['profile']) && $_COOKIE['profile'] === '1') {
+        if (
+            (isset($_COOKIE['profile']) && $_COOKIE['profile'] === '1')
+            || (
+                $_SERVER['argc'] > 1
+                && in_array('profile', $_SERVER['argv'])
+                && in_array('profile=1', $_SERVER['argv'])
+            )
+        ) {
             return true;
         }
         return false;

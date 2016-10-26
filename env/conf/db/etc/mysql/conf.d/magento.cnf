@@ -1,15 +1,50 @@
 [mysqld]
 
-tmp_table_size = 256M
-max_heap_table_size = 256M
-wait_timeout = 28800
-join_buffer_size = 128M
-innodb_buffer_pool_size = 512MB
-innodb_thread_concurrency = 6
-thread_concurrency = 6
+#tmp_table_size = 256M
+#max_heap_table_size = 256M
+#wait_timeout = 28800
+#join_buffer_size = 128M
+#innodb_buffer_pool_size = 512MB
+#innodb_thread_concurrency = 6
+#thread_concurrency = 6
 
 slow_query_log = 1
 slow_query_log_file = /var/log/mysql/db-slow.log
 long_query_time = 1
+
+max_connections = 500
+connect_timeout = 5
+wait_timeout = 3600
+max_allowed_packet = 128M
+thread_cache_size = 128
+sort_buffer_size = 4M
+bulk_insert_buffer_size = 16M
+tmp_table_size = 256M
+max_heap_table_size = 256M
+
+# MyISAM.
+myisam_recover = BACKUP
+key_buffer_size = 128M
+#open-files-limit = 2000
+table_open_cache = 400
+myisam_sort_buffer_size = 512M
+concurrent_insert = 2
+read_buffer_size = 2M
+read_rnd_buffer_size = 1M
+
+# InnoDB.
+default_storage_engine = InnoDB
+transaction-isolation = READ-COMMITTED
+innodb_buffer_pool_size = 512MB
+innodb_log_file_size = 100M
+innodb_log_buffer_size = 8M
+innodb_file_per_table = 1
+innodb_open_files = 40
+innodb_io_capacity = 40
+innodb_flush_method = O_DIRECT
+innodb_autoinc_lock_mode = 2
+innodb_flush_log_at_trx_commit = 2
+innodb_thread_concurrency = 6
+thread_concurrency = 6
 
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES

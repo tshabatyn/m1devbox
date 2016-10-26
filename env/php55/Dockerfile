@@ -1,6 +1,9 @@
 FROM php:5.5-fpm
 MAINTAINER Taras Shabatyn <tshabatyn@magento.com>
 
+ENV TERM=xterm-256color
+ENV COMPOSER_PROCESS_TIMEOUT 2000
+
 RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
@@ -14,7 +17,9 @@ RUN apt-get update && apt-get install -y \
     libgringotts-dev \
     curl \
     libcurl4-openssl-dev \
-    msmtp
+    msmtp \
+    patch \
+    less
 
 ARG php_ext
 
@@ -25,15 +30,24 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-COPY ./etc/php/conf.d/development-php.ini $PHP_INI_DIR/php.ini
+RUN cd /usr/local/bin/ \
+    && curl -O https://files.magerun.net/n98-magerun.phar \
+    && mv n98-magerun.phar n98 \
+    && chmod +x n98
 
 #we need it for xhprof
 RUN apt-get update && apt-get install -y \
     libssl-dev \
     && pecl install xhprof-beta \
     && docker-php-ext-enable xhprof \
-    && pecl install mongodb && docker-php-ext-enable mongodb \
-    && sed -i 's%auto_prepend_file =%auto_prepend_file = "/var/www/xhgui/external/header.php"%g' /usr/local/etc/php/php.ini
+    && pecl install mongodb && docker-php-ext-enable mongodb
+#we need it for xhprof
+
+#COPY ./etc/php/conf.d/production-php.ini $PHP_INI_DIR/php.ini
+COPY ./etc/php/conf.d/development-php.ini $PHP_INI_DIR/php.ini
+
+#we need it for xhprof
+RUN sed -i 's%auto_prepend_file =%auto_prepend_file = "/var/www/xhgui/external/header.php"%g' /usr/local/etc/php/php.ini
 #we need it for xhprof
 
 COPY ./etc/php/php-fpm.d/development-www.conf /usr/local/etc/php-fpm.d/www.conf
