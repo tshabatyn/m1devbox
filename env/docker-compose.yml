@@ -4,6 +4,7 @@ services:
 
 # NGINX
   web:
+    container_name: m1_web_1
     restart: always
     image: nginx:stable
     ports:
@@ -20,6 +21,7 @@ services:
 
 # PHP
   php:
+    container_name: m1_php_1
     build:
       context: ./php55
       args:
@@ -44,6 +46,7 @@ services:
 
 # CACHES
   redis:
+    container_name: m1_redis_1
     image: redis
     volumes:
       - ./data/redis:/data
@@ -51,6 +54,7 @@ services:
 
 # DB
   db:
+    container_name: m1_db_1
     image: mysql:5.6
 #    image: mysql:5.7
 #    image: mariadb:latest
@@ -66,6 +70,7 @@ services:
 
 # Email
   mailcatcher:
+    container_name: m1_mailcatcher_1
     image: schickling/mailcatcher
     expose:
       - 1025
@@ -76,4 +81,5 @@ services:
 
 # We need Mongo for xhprof
   mongo:
+    container_name: m1_mongo_1
     image: mongo:3.2

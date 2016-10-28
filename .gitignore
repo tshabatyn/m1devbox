@@ -1,2 +1,3 @@
 src
 env/db/dump.sql
+env/data/
