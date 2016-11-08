@@ -1,5 +1,5 @@
 UPDATE core_config_data SET value='http://www.magento.local/' WHERE path IN ('web/secure/base_url', 'web/unsecure/base_url');
-UPDATE admin_user SET username='admin', password=MD5('123123q') WHERE user_id=1;
+UPDATE admin_user SET username='admin', password='d6a19b06004a577bca8c39e7d4079706:123123q' WHERE user_id=1;
 
 INSERT IGNORE INTO core_config_data (scope, scope_id, path, value)
 VALUES ('default', 0, 'carriers/dhlint/sort_order', null),
