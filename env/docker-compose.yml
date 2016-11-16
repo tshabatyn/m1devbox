@@ -11,6 +11,11 @@ services:
       - "80:80"
     links:
       - php
+      - solr
+    networks:
+      default:
+        aliases:
+          - "www.magento.local"
     volumes_from:
       - php:ro
     volumes:
@@ -26,12 +31,13 @@ services:
       context: ./php55
       args:
         php_ext: bcmath curl dom json iconv intl mbstring mcrypt opcache pdo pdo_mysql session simplexml soap sockets xml xmlrpc xsl zip
-    command: bash -c "service ssh stop && service ssh start"
+#    command: bash -c "service ssh stop && service ssh start"
     links:
       - redis
       - db
       - mailcatcher
       - mongo # we need it for xhprof
+      - solr
     volumes:
       - ../src:/var/www/magento
       - ./conf/smtp/msmtprc:/etc/msmtprc:ro
@@ -67,6 +73,20 @@ services:
       - ./db/tune.sql:/root/tune.sql:ro
       - ./conf/db/.my.cnf:/root/.my.cnf:ro
       - ./conf/db/etc/mysql/conf.d/:/etc/mysql/conf.d/
+
+
+# Search engines
+  solr:
+    container_name: m1_solr_11
+    build:
+      context: ./solr36
+      args:
+        SOLR_VERSION: "3.6.2"
+        SOLR_KEY: "322D7ECA"
+        SOLR_SOURCE_SHA256_HASH: "3a1a40542670ea6efec246a081053732c5503ec1"
+    ports:
+      - "8983:8983"
+
 
 # Email
   mailcatcher:

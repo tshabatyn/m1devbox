@@ -78,8 +78,11 @@ RUN echo "xdebug.remote_enable=1" >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.i
     && echo ";xdebug.profiler_enable_trigger=1" >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini \
     && echo ";xdebug.profiler_output_dir = "/var/www/magento/var/tmp"" >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
 
+ENV PHP_IDE_CONFIG="serverName=www.magento.local"
+
 ADD entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+RUN pecl install oauth-1.2.3 && docker-php-ext-enable oauth
 
 EXPOSE 9000
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
